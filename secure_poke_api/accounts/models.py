@@ -53,3 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             "access": str(token.access_token),
             "refresh": str(token),
         }
+
+    @property
+    def pokemon_access_types(self):
+        return [pokemon_type.slug for pokemon_type in self.pokemon_types.all()]
