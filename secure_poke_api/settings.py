@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "secure_poke_api.accounts",
+    "secure_poke_api.pokemon",
 ]
 
 MIDDLEWARE = [
