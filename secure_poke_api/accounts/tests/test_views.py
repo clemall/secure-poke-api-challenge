@@ -5,12 +5,13 @@ from django.test import TestCase
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
+from ...pokemon.tests.mixins import PokemonTypeMixin
 from .mixins import UserMixin
 
 User = get_user_model()
 
 
-class AccountViewTestCase(UserMixin, TestCase):
+class AccountViewTestCase(UserMixin, PokemonTypeMixin, TestCase):
     def setUp(self, *args, **kwargs):
         super().setUp(*args, **kwargs)
         self.client = APIClient()
@@ -61,11 +62,12 @@ class AccountViewTestCase(UserMixin, TestCase):
 
     def test_me(self):
         """
-        Given a user
+        Given a user with a pokémon type
         When I call me
         Then response is 200 and I get the user information
         """
-        user = self.any_user()
+        pokemon_type = self.any_pokemon_type()
+        user = self.any_user(pokemon_types=[pokemon_type])
         token = user.get_auth_token()
 
         self.client.credentials(HTTP_AUTHORIZATION="Bearer " + token["access"])
@@ -77,5 +79,6 @@ class AccountViewTestCase(UserMixin, TestCase):
             json.loads(response.content),
             {
                 "email": user.email,
+                "group": [{"slug": pokemon_type.slug}],
             },
         )

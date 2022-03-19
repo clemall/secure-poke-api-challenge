@@ -1,16 +1,24 @@
 from rest_framework import serializers
 
 from secure_poke_api.accounts.models import User
+from secure_poke_api.pokemon.models import PokemonType
 
 __all__ = ["SignupSerializer", "AccountSerializer"]
 
 
+class PokemonTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PokemonType
+        fields = ["slug"]
+
+
 class AccountSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
+    group = PokemonTypeSerializer(many=True, read_only=True, source="pokemon_types")
 
     class Meta:
         model = User
-        fields = ("email",)
+        fields = ("email", "group")
 
 
 class SignupSerializer(serializers.ModelSerializer):
