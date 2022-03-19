@@ -17,7 +17,12 @@ class UserAdmin(DjangoUserAdmin):
             "Permissions",
             {"fields": ("is_active", "is_staff", "is_superuser")},
         ),
+        (
+            "Pokemon Types",
+            {"fields": ("pokemon_types",)},
+        ),
     )
+    filter_horizontal = ("pokemon_types",)
 
     search_fields = ("email",)
     ordering = ("email",)
