@@ -7,6 +7,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 __all__ = ["User"]
 
+from secure_poke_api.pokemon.models import PokemonType
+
 
 class UserManager(BaseUserManager):
     def _create_user(self, email, password, **extra_fields):
@@ -34,6 +36,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+
+    pokemon_types = models.ManyToManyField(PokemonType, blank=True)
 
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
