@@ -1,0 +1,7 @@
+[run]
+source = secure_poke_api
+omit = \
+    **/migrations/*.py, \
+    secure_poke_api/**/commands/*.py, \
+    secure_poke_api/*_settings.py, \
+    secure_poke_api/wsgi.py
