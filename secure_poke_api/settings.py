@@ -22,6 +22,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
 
+# for development only, replace for production
+BASE_URL_PROJECT = "http://localhost:8000"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -165,3 +168,4 @@ REST_FRAMEWORK = {
 
 # PokeApi settings
 POKEAPI_BASE_URL = "https://pokeapi.co/api/v2"
+POKEAPI_LIMIT = 300
