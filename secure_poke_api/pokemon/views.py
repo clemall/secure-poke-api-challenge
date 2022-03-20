@@ -11,10 +11,10 @@ __all__ = ["PokemonDetailView", "PokemonCollectionView"]
 
 class PokemonDetailView(APIView):
     """
-    return pokeapi Pokémon detail response
-    user must share at least one types group with the requested pokémon to be able to see the detail of that pokémon.
-    Example, user in group type [fire, steel] can see the detail of charizard [fire, flying]
-    Even if the user is missing [flying]
+    Returns PokeApi response with Pokémon details.
+    User must share at least one type with the requested pokémon to be able to see the detail of that pokémon.
+    Example: user with type [fire, steel] can see the detail of charizard [fire, flying]
+    since they share the type [fire], even the user is missing the type [flying].
     """
 
     permission_classes = [IsAuthenticated]
@@ -41,11 +41,11 @@ class PokemonDetailView(APIView):
 
 class PokemonCollectionView(APIView):
     """
-    return pokeapi pokémon collection response
-    The collection will contain all pokémon that have at least one matching type with the
-    user group type.
-    Example, user in group [fire, steel] will be able to see charizard [fire, flying]
-    as both share the [fire] type
+    Returns PokeApi with Pokémon collection.
+    The collection will contain all Pokémon that have at least one matching type with the
+    user's type.
+    Example: user with type [fire, steel] will be able to see charizard [fire, flying]
+    since both share the [fire] type.
     """
 
     permission_classes = [IsAuthenticated]
