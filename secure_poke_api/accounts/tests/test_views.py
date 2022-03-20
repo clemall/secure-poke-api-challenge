@@ -19,6 +19,8 @@ class AccountViewTestCase(UserMixin, PokemonTypeMixin, TestCase):
         self.LOGIN = "accounts:account_login"
         self.SIGNUP = "accounts:account_signup"
         self.ME = "accounts:account_me"
+        self.ADD_TO_GROUP = "accounts:account_add_to_group"
+        self.REMOVE_FROM_GROUP = "accounts:account_remove_from_group"
 
     def test_signin(self):
         """
@@ -80,5 +82,53 @@ class AccountViewTestCase(UserMixin, PokemonTypeMixin, TestCase):
             {
                 "email": user.email,
                 "group": [{"slug": pokemon_type.slug}],
+            },
+        )
+
+    def test_add_to_group(self):
+        """
+        Given a user without a pokémon type
+        When I call add_to_group
+        Then response is 200 and user is in the group
+        """
+        pokemon_type = self.any_pokemon_type()
+        user = self.any_user()
+        token = user.get_auth_token()
+
+        self.client.credentials(HTTP_AUTHORIZATION="Bearer " + token["access"])
+
+        url = reverse(self.ADD_TO_GROUP, kwargs={"pokemon_type": pokemon_type.slug})
+
+        response = self.client.post(url, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            json.loads(response.content),
+            {
+                "email": user.email,
+                "group": [{"slug": pokemon_type.slug}],
+            },
+        )
+
+    def test_remove_from_group(self):
+        """
+        Given a user with a pokémon type
+        When I call remove_from_group
+        Then response is 200 and user is removed from the group
+        """
+        pokemon_type = self.any_pokemon_type()
+        user = self.any_user(pokemon_types=[pokemon_type])
+        token = user.get_auth_token()
+
+        self.client.credentials(HTTP_AUTHORIZATION="Bearer " + token["access"])
+
+        url = reverse(self.REMOVE_FROM_GROUP, kwargs={"pokemon_type": pokemon_type.slug})
+
+        response = self.client.post(url, format="json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            json.loads(response.content),
+            {
+                "email": user.email,
+                "group": [],
             },
         )
