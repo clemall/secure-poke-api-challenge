@@ -74,3 +74,8 @@ congratulations :)
 
 ```
 
+
+### Possible improvements
+
+- Make a daily task (with Celery for instance) that will run the populate_pokemon_types script.
+- Add caching in the pokeapi wrapper to avoid the call to an external api.
