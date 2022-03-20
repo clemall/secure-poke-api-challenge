@@ -1,6 +1,26 @@
 version: "3"
 services:
 
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      - POSTGRES_USER=pokemon
+      - POSTGRES_DB=secure_poke_api
+      - POSTGRES_HOST=db
+    command: >
+      sh -c "python manage.py collectstatic --noinput &&
+             python manage.py migrate &&
+             python manage.py populate_pokemon_types &&
+             python manage.py runserver 0.0.0.0:8000"
+
   db:
     image: postgres:14
     ports:
